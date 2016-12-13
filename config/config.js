@@ -110,5 +110,4 @@ config.production = _.merge({}, config.development, {
     dataDir: env.DATA_DIR
   }
 });
-console.log(config.production)
 module.exports = config;
