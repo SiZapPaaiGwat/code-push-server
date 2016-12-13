@@ -1,3 +1,4 @@
+var _ = require('lodash');
 var config = {};
 config.development = {
   // Config for database, only support mysql.
@@ -88,5 +89,26 @@ config.development = {
     }
   }
 }
-config.production = Object.assign({}, config.development);
+
+var env = process.env
+config.production = _.merge({}, config.development, {
+  db: {
+    username: env.DB_USERNAME,
+    password: env.DB_PASSWORD,
+    database: env.DB_NAME,
+    host: env.DB_HOST,
+    port: env.DB_PORT
+  },
+  local: {
+    storageDir: env.STORAGE_DIR,
+    downloadUrl: `http://${env.DOWNLOAD_HOST}:${env.PORT}/download`
+  },
+  jwt: {
+    tokenSecret: env.TOKEN_SECRET
+  },
+  common: {
+    dataDir: env.DATA_DIR
+  }
+});
+console.log(config.production)
 module.exports = config;
